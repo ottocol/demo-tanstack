@@ -17,7 +17,7 @@ npm run dev
 
 `npm run dev` arranca **dos procesos** a la vez (con `concurrently`): el API en Express (puerto 3001) y Vite. El proxy de Vite (`vite.config.js`) manda a Express todo lo que empieza por `/api`, así que el navegador solo ve un origen y no hace falta configurar CORS. Si Express no está arrancado, el panel «Servidor» lo avisa.
 
-En **StackBlitz** funciona igual: [stackblitz.com/github/ottocol/client-blog-tanstack](https://stackblitz.com/github/ottocol/client-blog-tanstack) instala y ejecuta `npm run dev` (`.stackblitzrc`). Va mejor en Chrome o Edge.
+En **StackBlitz** funciona igual: [stackblitz.com/github/ottocol/demo-tanstack](https://stackblitz.com/github/ottocol/demo-tanstack) instala y ejecuta `npm run dev` (`.stackblitzrc`). Va mejor en Chrome o Edge.
 
 ## Antes de empezar: qué hay en pantalla
 
