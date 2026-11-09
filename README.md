@@ -1,6 +1,6 @@
 # Demo de TanStack Query: micro-red social
 
-Demo en clase de **TanStack Query** con Vue 3. Simula una micro-red social con *posts* y *likes*, con un pequeño API REST en Express. Va en **5 pasos**, uno por ruta, y cada paso enseña una sola idea:
+Demo de **TanStack Query** con Vue 3. Simula una micro-red social con *posts* y *likes*, con un pequeño API REST en Express. Va en **5 pasos**, uno por ruta, y cada paso enseña una sola idea:
 
 | Paso | Ruta | Qué demuestra |
 |---|---|---|
@@ -35,7 +35,7 @@ En **StackBlitz** funciona igual: [stackblitz.com/github/ottocol/client-blog-tan
 >
 > Los enlaces del menú **recargan la página** (son `<a>` normales, no `router-link`). Así cada paso empieza con la **caché vacía**, pero el servidor conserva los likes que se hayan dado. Para repetir un paso con la caché vacía, recarga la página.
 >
-> **Al empezar la clase, pulsa *Restaurar servidor***. Algunos pasos citan números concretos de likes (por ejemplo, el paso 5), y si se ha quedado marcado «Los likes fallan», el paso 5 no funciona como se espera.
+> **Al empezar la demo, pulsa *Restaurar servidor***. Algunos pasos citan números concretos de likes (por ejemplo, el paso 5), y si se ha quedado marcado «Los likes fallan», el paso 5 no funciona como se espera.
 
 ## Dónde está el código
 
@@ -90,7 +90,7 @@ Opciones globales en `main.js`: `refetchOnWindowFocus: false`, para que no se la
 
 **Para explicar:** la diferencia entre `isPending` (no hay datos todavía, se ve «Cargando…») e `isFetching` (hay una petición en curso, aunque ya haya datos: se ve «actualizando…»). Son dos ejes independientes: `status` (¿tengo datos?) y `fetchStatus` (¿estoy pidiendo?). Existe también `isLoading`, que equivale a `isPending && isFetching`.
 
-**Pregunta para la clase:** «¿Hace falta volver a pedir los datos cada vez que se monta B?» → paso 3.
+«¿Hace falta volver a pedir los datos cada vez que se monta B?» → paso 3.
 
 ## Paso 3 · staleTime y gcTime
 
@@ -99,7 +99,7 @@ Opciones globales en `main.js`: `refetchOnWindowFocus: false`, para que no se la
 - **`staleTime`**: cuánto tiempo los datos se consideran **frescos**. Mientras lo son, montar un componente **no** lanza ninguna petición.
 - **`gcTime`**: cuánto tiempo se guarda en caché una query **que nadie está usando** (`inactive`). Pasado ese tiempo se **borra**, y la siguiente vez se vuelve a ver «Cargando…».
 
-**Código:** `src/pasos/paso3/PostsConEstado.vue`, con `staleTime: 10 s` y `gcTime: 20 s` (valores bajos para que se pueda ver en clase). El chip junto al título muestra `fresh`, `stale` o `fetching`.
+**Código:** `src/pasos/paso3/PostsConEstado.vue`, con `staleTime: 10 s` y `gcTime: 20 s` (valores bajos para que se pueda ver en la demo). El chip junto al título muestra `fresh`, `stale` o `fetching`.
 
 **Pasos:**
 
@@ -163,11 +163,10 @@ Opciones globales en `main.js`: `refetchOnWindowFocus: false`, para que no se la
 
 ---
 
-## Ampliaciones (si sobra tiempo)
+## Ampliaciones posibles
 
 - **`refetchOnWindowFocus`**: ponlo a `true` en `main.js`, cambia a otra ventana y vuelve. Si los datos están *stale*, se vuelven a pedir.
 - **Dos usuarios de verdad**: abre la demo en **dos pestañas**. Comparten el servidor, pero cada una tiene su caché. Si das likes en una, la otra no se entera hasta que vuelva a pedir los datos. Combinado con `refetchOnWindowFocus: true`, basta con cambiar de pestaña para que se actualice.
 - **Quitar la comprobación de `res.ok`** en `src/api/posts.js` y repetir el fallo del paso 5: el error pasa desapercibido. No hay mensaje ni *rollback*: el número sube y, cuando llega el refetch de `onSettled`, vuelve a bajar sin que nadie sepa por qué.
 - **Precargar la página siguiente** en el paso 4: `queryClient.prefetchQuery({ queryKey: qk.postsPage(page + 1), queryFn: … })`. Al pulsar «Siguiente», la página ya está en la caché.
 - **`select`**: transformar los datos de la query en el propio `useQuery`, por ejemplo para el Top 3, en lugar de con un `computed`.
-- **Scroll infinito** (`useInfiniteQuery`): se ha dejado fuera a propósito. Cambia la forma de los datos (`data.pages`), lo que complica las actualizaciones optimistas y los refetch, y no aporta nada nuevo sobre la caché.
